@@ -8,7 +8,7 @@ namespace sort {
 template<class RandomAccessIterator>
 void merge(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    return merge(begin, end, std::less<std::iterator_traits<RandomAccessIterator>::value_type>());
+    return merge(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
 template<class RandomAccessIterator, class Compare>
@@ -16,7 +16,7 @@ void merge(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
     if (end - begin < 2u)
         return;
-    std::vector<std::iterator_traits<RandomAccessIterator>::value_type> buffer(end - begin);
+    std::vector<typename std::iterator_traits<RandomAccessIterator>::value_type> buffer(end - begin);
     impl_merge(begin, end, comp, buffer);
 }
 
