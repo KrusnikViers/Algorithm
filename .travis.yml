@@ -21,5 +21,4 @@ before_script:
 script: 
   - make
   - cd out/bin
-  - ls
   - ./unit_tests
