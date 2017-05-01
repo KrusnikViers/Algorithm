@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+        "name": "Debug",
+        "generator": "Visual Studio 15 2017",
+        "configurationType" : "Debug",
+        "buildRoot":  "${ProjectDir}\\build\\${name}",
+        "cmakeCommandArgs":  "",
+        "buildCommandArgs": "-m -v:minimal",
+        "ctestCommandArgs":  ""
+        },
+      {
+        "name": "Release",
+        "generator": "Visual Studio 15 2017",
+        "configurationType": "Release",
+        "buildRoot": "${ProjectDir}\\build\\${name}",
+        "cmakeCommandArgs": "",
+        "buildCommandArgs": "-m -v:minimal",
+        "ctestCommandArgs": ""
+      }
+    ]
+}
