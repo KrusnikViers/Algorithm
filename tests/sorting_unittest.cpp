@@ -7,6 +7,7 @@
 #include "gtest/gtest.h"
 #include "sorting/mergesort.h"
 #include "sorting/simplesort.h"
+#include "sorting/quicksort.h"
 
 class SortingTest : public ::testing::Test,
                     public ::testing::WithParamInterface<const char*>
@@ -109,6 +110,13 @@ TEST_P(SortingTest, Merge)
     initializeStableDataAndTimer(GetParam());
     sort::merge(stable_data_.begin(), stable_data_.end());
     checkDataAndTimer(true);
+}
+
+TEST_P(SortingTest, Quicksort)
+{
+    initializeUsualDataAndTimer(GetParam());
+    sort::quicksort(stable_data_.begin(), stable_data_.end());
+    checkDataAndTimer(false);
 }
 
 INSTANTIATE_TEST_CASE_P(DifferentInput, SortingTest,
