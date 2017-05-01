@@ -4,22 +4,6 @@
 
 namespace sort {
 
-// Stable selection sort.
-template<class RandomAccessIterator>
-void merge(RandomAccessIterator begin, RandomAccessIterator end)
-{
-    return merge(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
-}
-
-template<class RandomAccessIterator, class Compare>
-void merge(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
-{
-    if (end - begin < 2u)
-        return;
-    std::vector<typename std::iterator_traits<RandomAccessIterator>::value_type> buffer(end - begin);
-    impl_merge(begin, end, comp, buffer);
-}
-
 template<class RandomAccessIterator, class ValueType, class Compare>
 void impl_merge(RandomAccessIterator begin, RandomAccessIterator end, Compare comp, std::vector<ValueType>& buffer)
 {
@@ -49,6 +33,21 @@ void impl_merge(RandomAccessIterator begin, RandomAccessIterator end, Compare co
     if (l_it != middle)
         std::move_backward(l_it, middle, end);
     std::move(buffer.begin(), buffer.begin() + b_index, begin);
+}
+
+template<class RandomAccessIterator, class Compare>
+void merge(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
+{
+    if (end - begin < 2u)
+        return;
+    std::vector<typename std::iterator_traits<RandomAccessIterator>::value_type> buffer(end - begin);
+    impl_merge(begin, end, comp, buffer);
+}
+
+template<class RandomAccessIterator>
+void merge(RandomAccessIterator begin, RandomAccessIterator end)
+{
+    return merge(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
 }  // namespace sort

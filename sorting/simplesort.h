@@ -5,12 +5,6 @@
 namespace sort {
 
 // Bubble sort.
-template<class RandomAccessIterator>
-void bubble(RandomAccessIterator begin, RandomAccessIterator end)
-{
-    return bubble(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
-}
-
 template<class RandomAccessIterator, class Compare>
 void bubble(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
@@ -25,14 +19,14 @@ void bubble(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
     }
 }
 
-
-// Selection sort.
 template<class RandomAccessIterator>
-void selection(RandomAccessIterator begin, RandomAccessIterator end)
+void bubble(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    return selection(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
+    return bubble(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
+
+// Selection sort.
 template<class RandomAccessIterator, class Compare>
 void selection(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
@@ -49,14 +43,14 @@ void selection(RandomAccessIterator begin, RandomAccessIterator end, Compare com
     }
 }
 
-
-// Stable selection sort.
 template<class RandomAccessIterator>
-void stableSelection(RandomAccessIterator begin, RandomAccessIterator end)
+void selection(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    return stableSelection(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
+    return selection(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
+
+// Stable selection sort.
 template<class RandomAccessIterator, class Compare>
 void stableSelection(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
@@ -75,14 +69,14 @@ void stableSelection(RandomAccessIterator begin, RandomAccessIterator end, Compa
     }
 }
 
-
-// Insertion sort.
 template<class RandomAccessIterator>
-void insertion(RandomAccessIterator begin, RandomAccessIterator end)
+void stableSelection(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    return insertion(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
+    return stableSelection(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
 
+
+// Insertion sort.
 template<class RandomAccessIterator, class Compare>
 void insertion(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
@@ -96,5 +90,12 @@ void insertion(RandomAccessIterator begin, RandomAccessIterator end, Compare com
         ++sorted;
     }
 }
+
+template<class RandomAccessIterator>
+void insertion(RandomAccessIterator begin, RandomAccessIterator end)
+{
+    return insertion(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
+}
+
 
 }  // namespace sort
