@@ -1,7 +1,17 @@
+dist: trusty
+sudo: require
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+    packages:
+      - cmake
+      - cmake-data
+
 language: cpp
 compiler:
-    - gcc
-    - clang
+  - gcc
+  - clang
 
 before_script:
   - mkdir build
