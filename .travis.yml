@@ -20,3 +20,5 @@ before_script:
 
 script: 
   - make
+  - cd out/bin
+  - ./unit_tests --gtest_filter=*SortingTest*
