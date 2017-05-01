@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "gtest/gtest.h"
+#include "sorting/mergesort.h"
 #include "sorting/simplesort.h"
 
 class SortingTest : public ::testing::Test,
@@ -100,6 +101,13 @@ TEST_P(SortingTest, Insertion)
 {
     initializeStableDataAndTimer(GetParam());
     sort::insertion(stable_data_.begin(), stable_data_.end());
+    checkDataAndTimer(true);
+}
+
+TEST_P(SortingTest, Merge)
+{
+    initializeStableDataAndTimer(GetParam());
+    sort::merge(stable_data_.begin(), stable_data_.end());
     checkDataAndTimer(true);
 }
 
