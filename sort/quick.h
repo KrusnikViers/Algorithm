@@ -6,17 +6,15 @@
 namespace sort {
 namespace impl {
 
-// Three-way splitting quicksort: divide elements on lesser, equal and greater than the base element parts.
+// Three-way splitting: divide elements on lesser, equal and greater than the base element parts.
 template<class RandomAccessIterator, class Compare>
-void quick(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
+void threeWaySplit(RandomAccessIterator begin, RandomAccessIterator end, Compare comp,
+                   RandomAccessIterator& equal_begin, RandomAccessIterator& greater_begin)
 {
-    if (end - begin < 2u)
-        return;
-
     // Randomized base element selection should improve performance for a data, that was already in bad order.
     auto base = begin + rand() % (end - begin);
-    auto greater_begin = begin;
-    auto equal_begin = begin;
+    greater_begin = begin;
+    equal_begin = begin;
 
     // Dividing data.
     for (auto it = begin; it != end; ++it) {
@@ -46,7 +44,16 @@ void quick(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
         }
         // Leave element in the end of the greater elements interval, if it is greater than the base one.
     }
+}
 
+template<class RandomAccessIterator, class Compare>
+void quick(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
+{
+    if (end - begin < 2u)
+        return;
+    RandomAccessIterator equal_begin, greater_begin;
+    // Divide elements on subarrays.
+    threeWaySplit(begin, end, comp, equal_begin, greater_begin);
     // Sorting subarrays with elements, that are lesser or greater than the base one.
     quick(begin, equal_begin, comp);
     quick(greater_begin, end, comp);

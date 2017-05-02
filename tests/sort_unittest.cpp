@@ -260,3 +260,61 @@ TEST_P(ShuffleSortingTest, Basic)
     sort::quick(original_data_.begin(), original_data_.end());
     EXPECT_EQ(original_data_, data_);
 }
+
+// Test shuffle.
+class KStatisticsSortingTest : public SortingTest
+{
+protected:
+    void prepareTest()
+    {
+        std::ifstream input_stream(GetParam(), std::istream::in);
+        int N;
+        input_stream >> N;
+        ASSERT_GT(N, 0);
+
+        original_data_.resize(N);
+        for (int i = 0; i < N; ++i)
+            input_stream >> original_data_[i];
+        input_stream.close();
+        data_ = original_data_;
+    }
+
+    std::vector<int> data_;
+    std::vector<int> original_data_;
+};
+
+INSTANTIATE_TEST_CASE_P(IntegerInput, KStatisticsSortingTest,
+                        ::testing::Values("data/sorting/highly_dispersed.txt",
+                                          "data/sorting/highly_duplicated.txt",
+                                          "data/sorting/rarely_duplicated.txt",
+                                          "data/sorting/unique_1.txt",
+                                          "data/sorting/unique_2.txt",
+                                          "data/sorting/unique_3.txt"));
+
+TEST_P(KStatisticsSortingTest, Basic)
+{
+    // Set concrete seed to make test reproducible.
+    std::srand(42u);
+    prepareTest();
+    sort::quick(original_data_.begin(), original_data_.end());
+
+    // Check minimum.
+    EXPECT_EQ(original_data_[0], *sort::k_statistics(data_.begin(), data_.end(), 0u));
+    sort::shuffle(data_.begin(), data_.end());
+
+    // Check maximum.
+    EXPECT_EQ(original_data_.back(), *sort::k_statistics(data_.begin(), data_.end(), data_.size() - 1));
+    sort::shuffle(data_.begin(), data_.end());
+
+    // Check random points from between.
+    const size_t kSamplesCount = 9;
+    const size_t fraction = data_.size() / kSamplesCount;
+    for (size_t i = 1; i <= kSamplesCount; ++i) {
+        EXPECT_EQ(original_data_[i * fraction], *sort::k_statistics(data_.begin(), data_.end(), i * fraction));
+        sort::shuffle(data_.begin(), data_.end());
+    }
+
+    // Check, that data was not corrupted.
+    sort::quick(data_.begin(), data_.end());
+    EXPECT_EQ(original_data_, data_);
+}
