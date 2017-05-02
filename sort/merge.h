@@ -19,7 +19,7 @@ void merge(RandomAccessIterator begin, RandomAccessIterator end, Compare comp, s
 
     // Merging results.
     RandomAccessIterator merged_left = begin, merged_right = middle;
-    std::vector<ValueType>::iterator merged_in_buffer = buffer.begin();
+    auto merged_in_buffer = buffer.begin();
     while (merged_left != middle && merged_right != end) {
         if (comp(*merged_right, *merged_left)) {
             *merged_in_buffer = std::move(*merged_right);
