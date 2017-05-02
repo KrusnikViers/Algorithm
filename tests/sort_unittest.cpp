@@ -1,6 +1,7 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -8,6 +9,8 @@
 #include "sort/basic.h"
 #include "sort/heap.h"
 #include "sort/merge.h"
+#include "sort/shuffle.h"
+#include "sort/statistics.h"
 #include "sort/quick.h"
 
 class SortingTest : public ::testing::Test,
@@ -196,4 +199,64 @@ TEST_P(UnstableSortingTest, Heapsort)
     prepareSortingTest();
     sort::heap(data_.begin(), data_.end());
     checkSorting();
+}
+
+// Test shuffle.
+class ShuffleSortingTest : public SortingTest
+{
+protected:
+    void prepareShuffleTest()
+    {
+        std::ifstream input_stream(GetParam(), std::istream::in);
+        int N;
+        input_stream >> N;
+        ASSERT_GT(N, 0);
+
+        original_data_.resize(N);
+        for (int i = 0; i < N; ++i)
+            input_stream >> original_data_[i];
+        input_stream.close();
+        data_ = original_data_;
+        startMeasurement();
+    }
+
+    void checkShuffled()
+    {
+        endMeasurement();
+        // We expect at least 90% of the elements to be not on their original places.
+        size_t shuffled_count = 0;
+        for (size_t i = 0; i < data_.size(); ++i)
+            if (data_[i] != original_data_[i])
+                ++shuffled_count;
+        EXPECT_GT(shuffled_count, original_data_.size() * 0.9);
+        std::cout << shuffled_count << " of " << original_data_.size() << " elements moved." << std::endl;
+    }
+
+    std::vector<int> data_;
+    std::vector<int> original_data_;
+};
+
+INSTANTIATE_TEST_CASE_P(IntegerInput, ShuffleSortingTest,
+                        ::testing::Values("data/sorting/highly_dispersed.txt",
+                                          "data/sorting/highly_duplicated.txt",
+                                          "data/sorting/rarely_duplicated.txt",
+                                          "data/sorting/unique_1.txt",
+                                          "data/sorting/unique_2.txt",
+                                          "data/sorting/unique_3.txt"));
+
+TEST_P(ShuffleSortingTest, Basic)
+{
+    // Set concrete seed to make test reproducible.
+    std::srand(42u);
+    prepareShuffleTest();
+    sort::shuffle(data_.begin(), data_.end());
+    checkShuffled();
+
+    // Even after multiple shuffles, elements should not be corrupted.
+    const int kShufflesCount = 5;
+    for (int i = 0; i < kShufflesCount; ++i)
+        sort::shuffle(data_.begin(), data_.end());
+    sort::quick(data_.begin(), data_.end());
+    sort::quick(original_data_.begin(), original_data_.end());
+    EXPECT_EQ(original_data_, data_);
 }
