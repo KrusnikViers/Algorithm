@@ -8,13 +8,13 @@ namespace sort {
 template<class RandomAccessIterator, class Compare>
 void bubble(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
-    // Use end iterator as an indicator of already sorted elements.
+    // Begin iterator is moved one position backwards on each step.
     while (end != begin) {
         for (auto it = begin; it + 1 != end; ++it) {
+            // Swap elements, if they are inversed.
             if (comp(*(it + 1), *it))
-                std::iter_swap(it + 1, it);
+                std::iter_swap(it, it + 1);
         }
-        // After each inner iterations, last element will be placed on it's position.
         --end;
     }
 }
@@ -26,12 +26,13 @@ void bubble(RandomAccessIterator begin, RandomAccessIterator end)
 }
 
 
-// Selection sort.
+// Unstable selection sort.
 template<class RandomAccessIterator, class Compare>
 void selection(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
-    // Use begin iterator as an indicator of already sorted elements.
+    // Begin iterator is moved one position forward on each step.
     while (end != begin) {
+        // Selecting unsorted element, that should be first.
         auto best = begin;
         for (auto it = begin + 1; it != end; ++it) {
             if (comp(*it, *best))
@@ -54,8 +55,9 @@ void selection(RandomAccessIterator begin, RandomAccessIterator end)
 template<class RandomAccessIterator, class Compare>
 void stableSelection(RandomAccessIterator begin, RandomAccessIterator end, Compare comp)
 {
-    // Use begin iterator as an indicator of already sorted elements.
+    // Begin iterator is moved one position forward on each step.
     while (end != begin) {
+        // Selecting unsorted element, that should be first.
         auto best = begin;
         for (auto it = begin + 1; it != end; ++it) {
             if (comp(*it, *best))
@@ -83,6 +85,7 @@ void insertion(RandomAccessIterator begin, RandomAccessIterator end, Compare com
     auto sorted = begin;
     while (sorted != end) {
         auto current = sorted;
+        // Move current element through already sorted data, until it will be placed correctly.
         while (current != begin && comp(*current, *(current - 1))) {
             std::iter_swap(current - 1, current);
             --current;
@@ -96,6 +99,5 @@ void insertion(RandomAccessIterator begin, RandomAccessIterator end)
 {
     return insertion(begin, end, std::less<typename std::iterator_traits<RandomAccessIterator>::value_type>());
 }
-
 
 }  // namespace sort

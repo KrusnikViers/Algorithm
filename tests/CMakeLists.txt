@@ -10,7 +10,7 @@ enable_testing()
 include_directories(googletest/googletest/include googletest/googletest)
 
 set(SRC
-	sorting_unittest.cpp)
+	sort_unittest.cpp)
 include_directories(../)
 add_executable(unit_tests ${SRC})
 target_link_libraries(unit_tests gtest gtest_main)
