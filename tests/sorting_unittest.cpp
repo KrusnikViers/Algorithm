@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "gtest/gtest.h"
-#include "sorting/heapsort.h"
-#include "sorting/mergesort.h"
-#include "sorting/simplesort.h"
-#include "sorting/quicksort.h"
+#include "sort/basic.h"
+#include "sort/heap.h"
+#include "sort/merge.h"
+#include "sort/quick.h"
 
 class SortingTest : public ::testing::Test,
                     public ::testing::WithParamInterface<const char*>

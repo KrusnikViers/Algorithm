@@ -18,6 +18,6 @@ set(CMAKE_CXX_REQUIRED TRUE)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Components
-add_subdirectory(sorting)
+add_subdirectory(sort)
 add_subdirectory(utils)
 add_subdirectory(tests)
